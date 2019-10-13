@@ -13,15 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from SmartDjango import Analyse
 from django.shortcuts import render
 from django.urls import path, include
 
 
-def index_handler(r):
+@Analyse.r()
+def view_handler(r):
     return render(r, 'index.html')
 
 
 urlpatterns = [
     path('v1', include('CrazyData.api_urls')),
-    path('index.html', index_handler),
+    path('hall/<path:pid>', view_handler),
 ]

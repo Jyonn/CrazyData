@@ -20,7 +20,7 @@
     <div id="bar-container" class="container"></div>
 </body>
 <script>
-    let pid = getQueryParam('pid');
+    let pid = window.location.pathname.substr(6, 4);
     let mainComponent = new MainComponent({
         splineContainerId: 'spline-container',
         barContainerId: 'bar-container',
