@@ -1,0 +1,22 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+a {
+  text-decoration: none;
+}
+input,
+textarea,
+div {
+  outline: none;
+  border: none;
+  background: none;
+  resize: none;
+}
+.container {
+  width: 100%;
+  height: 100%;
+}
+/*# sourceMappingURL=main.css.map */

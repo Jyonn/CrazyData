@@ -1,0 +1,30 @@
+{% load static %}
+<html lang="zh-CN">
+<head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>数据食堂</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <link rel="stylesheet" href="{% static "css/main.less" %}">
+    <script src="{% static "js/common.js" %}"></script>
+    <script src="{% static "js/store.js" %}"></script>
+    <script src="{% static "js/request.js" %}"></script>
+    <script src="{% static "js/pager.js" %}"></script>
+    <script src="{% static "js/project.js" %}"></script>
+    <script src="{% static "js/crazyFetch.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
+</head>
+<body>
+    <div id="spline-container" class="container"></div>
+    <div id="bar-container" class="container"></div>
+</body>
+<script>
+    let pid = getQueryParam('pid');
+    let mainComponent = new MainComponent({
+        splineContainerId: 'spline-container',
+        barContainerId: 'bar-container',
+        projectId: pid,
+    });
+</script>
+</html>
