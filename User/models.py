@@ -62,6 +62,7 @@ class User(models.Model):
                         qt_token=qt_token,
                     )
                     user.save()
+                    return user
                 except Exception:
                     return UserError.CREATE_USER
             else:
