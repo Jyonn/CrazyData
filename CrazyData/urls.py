@@ -16,6 +16,7 @@ Including another URLconf
 from SmartDjango import Analyse
 from django.shortcuts import render
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 
 @Analyse.r()

@@ -18,6 +18,7 @@ class MainComponent {
     }
 
     prepareData(dataFlow) {
+        dataFlow = dataFlow.slice(dataFlow.length - 10);
         this.splineSeries = [];
         this.barSeries = [{name: '', data: []}];
         this.labels = dataFlow[0].waves.map(v => {
@@ -85,6 +86,7 @@ class MainComponent {
             yAxis: {
                 min: 0,
                 title: {
+                    text: '',
                     align: 'high'
                 },
                 labels: {
@@ -101,16 +103,6 @@ class MainComponent {
                 }
             },
             legend: {
-                // layout: 'vertical',
-                // align: 'right',
-                // verticalAlign: 'top',
-                // x: -40,
-                // y: 80,
-                // floating: true,
-                // borderWidth: 1,
-                // backgroundColor:
-                //     Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-                // shadow: true
                 enabled: false,
             },
             credits: {
@@ -128,6 +120,9 @@ class MainComponent {
                 marginRight: 10,
                 zoomType: 'xy',
             },
+            plotOptions: {
+                turboThreshold: 10,
+            },
             time: {
                 useUTC: false
             },
@@ -136,7 +131,7 @@ class MainComponent {
             },
             xAxis: {
                 type: 'datetime',
-                tickPixelInterval: 150
+                tickPixelInterval: 150,
             },
             yAxis: {
                 title: {
@@ -145,13 +140,16 @@ class MainComponent {
             },
             tooltip: {
                 headerFormat: '<b>{series.name}</b><br/>',
-                pointFormat: '{point.y}'
+                pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y}'
             },
             exporting: {
                 enabled: true,
                 filename: this.splineTitle,
             },
             series: this.splineSeries,
+            credits: {
+                enabled: false
+            },
         });
     }
 }

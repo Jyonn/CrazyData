@@ -56,7 +56,11 @@ class Config(models.Model):
 
 
 class ConfigInstance:
-    pass
+    QITIAN_APP_ID = 'qt-app-id'
+    QITIAN_APP_SECRET = 'qt-app-secret'
+
+    JWT_ENCODE_ALGO = 'jwt-encode-algo'
+    PROJECT_SECRET_KEY = 'project-secret-key'
 
 
 CI = ConfigInstance

@@ -3,7 +3,7 @@ from django.views import View
 
 from Base.common import time_dictor, time_pager
 from Base.param_limit import PL
-from Project.models import ProjectP
+from Project.models import ProjectP, ProjectError
 from Segment.models import SegmentP, WaveP, Wave, Segment
 
 
@@ -12,9 +12,15 @@ class BaseView(View):
     @Analyse.r({
         ProjectP.project,
         SegmentP.time,
-        P('waves').as_list(WaveP.label, WaveP.value)
+        P('waves').as_list(WaveP.label, WaveP.value),
+        ProjectP.ticket,
     })
     def post(r):
+        project = r.d.project
+        ticket = r.d.ticket
+        if not project.auth_ticket(ticket):
+            return ProjectError.TICKET_INVALID
+
         segment = Segment.new(**r.d.dict('project', 'time'))
         for data in r.d.waves:
             Wave.new(segment=segment, **data)

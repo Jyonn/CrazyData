@@ -1,0 +1,7 @@
+PyJWT
+SmartDjango==3.5.1.alpha10
+gunicorn
+django-cors-headers
+mysqlclient
+QitianSDK==0.0.7.alpha2
+django
