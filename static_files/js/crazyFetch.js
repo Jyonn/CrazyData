@@ -1,7 +1,7 @@
 class CrazyFetch {
     constructor(project) {
         this.project = project;
-        this.pager = new Pager({count: 5, api: `/v1/segment?pid=${this.project.pid}`, last: 0});
+        this.pager = new Pager({count: 10, api: `https://data.6-79.cn/v1/segment?pid=${this.project.pid}`, last: 0});
         this.is_fetching = false;
     }
 
@@ -17,7 +17,13 @@ class CrazyFetch {
         while (true) {
             this.pager.last = this.project.current_fetch_time;
             while (this.pager.last !== null) {
-                let data = await this.pager.next();
+                let data;
+                try {
+                    data = await this.pager.next();
+                } catch (error) {
+                    console.warn('fetch failed, retrying...')
+                    break;
+                }
                 if (data === null) {
                     break;
                 }

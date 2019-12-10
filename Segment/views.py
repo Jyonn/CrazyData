@@ -1,5 +1,6 @@
 from SmartDjango import Analyse, P
 from django.views import View
+from smartify import PList, PDict
 
 from Base.common import time_dictor, time_pager
 from Base.param_limit import PL
@@ -12,7 +13,7 @@ class BaseView(View):
     @Analyse.r({
         ProjectP.project,
         SegmentP.time,
-        P('waves').as_list(WaveP.label, WaveP.value),
+        PList(name='waves').set_child(PDict().set_fields(WaveP.label, WaveP.value)),
         ProjectP.ticket,
     })
     def post(r):

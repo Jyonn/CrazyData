@@ -1,10 +1,11 @@
-from SmartDjango import models, E, Excp, P
+from SmartDjango import models, E
 from django.utils.crypto import get_random_string
+from smartify import Processor
 
 from Base.common import get_time
 
 
-@E.register
+@E.register()
 class ProjectError:
     GET_PROJECT = E("获取项目失败")
     PROJECT_NOT_FOUND = E("找不到项目")
@@ -42,14 +43,13 @@ class Project(models.Model):
     )
 
     @classmethod
-    @Excp.pack
     def get(cls, pid):
         try:
             return cls.objects.get(pid=pid)
         except cls.DoesNotExist:
-            return ProjectError.PROJECT_NOT_FOUND
-        except Exception:
-            return ProjectError.GET_PROJECT
+            raise ProjectError.PROJECT_NOT_FOUND
+        except Exception as err:
+            raise ProjectError.GET_PROJECT(debug_message=err)
 
     @classmethod
     def get_unique_pid(cls):
@@ -57,12 +57,11 @@ class Project(models.Model):
             pid = get_random_string(length=4)
             try:
                 cls.get(pid)
-            except Excp as ret:
-                if ret.eis(ProjectError.PROJECT_NOT_FOUND):
+            except E as e:
+                if e.eis(ProjectError.PROJECT_NOT_FOUND):
                     return pid
 
     @classmethod
-    @Excp.pack
     def new(cls, name, owner):
         crt_time = get_time()
         try:
@@ -74,8 +73,8 @@ class Project(models.Model):
                 ticket=get_random_string(length=64)
             )
             project.save()
-        except Exception:
-            return ProjectError.NEW_PROJECT
+        except Exception as err:
+            raise ProjectError.NEW_PROJECT(debug_message=err)
         return project
 
     def _readable_create_time(self):
@@ -100,4 +99,4 @@ class Project(models.Model):
 
 class ProjectP:
     name, pid, ticket = Project.P('name', 'pid', 'ticket')
-    project = pid.clone().process(P.Processor(Project.get, yield_name='project'))
+    project = pid.clone().process(Processor(Project.get, yield_name='project'))

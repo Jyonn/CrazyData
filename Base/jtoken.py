@@ -3,10 +3,10 @@ import datetime
 import jwt
 
 from Base.common import SECRET_KEY, JWT_ENCODE_ALGO
-from SmartDjango import Excp, E
+from SmartDjango import E
 
 
-@E.register
+@E.register()
 class JWTError:
     JWT_EXPIRED = E("认证过期", hc=401)
     ERROR_JWT_FORMAT = E("错误的认证格式", hc=400)
@@ -30,7 +30,6 @@ class JWT:
         return encode_str, dict_
 
     @staticmethod
-    @Excp.pack
     def decrypt(str_):
         """
         jwt签名解密
@@ -39,12 +38,12 @@ class JWT:
         try:
             dict_ = jwt.decode(str_, SECRET_KEY, JWT_ENCODE_ALGO)
         except jwt.DecodeError:
-            return JWTError.ERROR_JWT_FORMAT
+            raise JWTError.ERROR_JWT_FORMAT
         if 'expire' not in dict_.keys() \
                 or 'ctime' not in dict_.keys() \
                 or not isinstance(dict_['ctime'], float) \
                 or not isinstance(dict_['expire'], int):
-            return JWTError.JWT_PARAM_INCOMPLETE
+            raise JWTError.JWT_PARAM_INCOMPLETE
         if datetime.datetime.now().timestamp() > dict_['ctime'] + dict_['expire']:
-            return JWTError.JWT_EXPIRED
+            raise JWTError.JWT_EXPIRED
         return dict_

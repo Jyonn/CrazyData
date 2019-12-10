@@ -7,7 +7,7 @@ class MainComponent {
     }
 
     initProject(projectId) {
-        Request.get(`/v1/project/@${projectId}`)
+        Request.get(`https://data.6-79.cn/v1/project/@${projectId}`)
             .then(data => {
                 this.project = new Project(data);
                 this.title.innerText = '数据食堂 - ' + this.project.name;
@@ -18,21 +18,21 @@ class MainComponent {
     }
 
     prepareData(dataFlow) {
-        dataFlow = dataFlow.slice(dataFlow.length - 10);
+        // dataFlow = dataFlow.slice(dataFlow.length - 10);
         this.splineSeries = [];
         this.barSeries = [{name: '', data: []}];
-        this.labels = dataFlow[0].waves.map(v => {
-            this.splineSeries.push({name: v.label, data: []});
-            return v.label;
-        });
+        this.labels = [];
         dataFlow.forEach(data => {
             let time = data.time * 1000;
             data.waves.forEach(wave => {
                 let index = this.labels.indexOf(wave.label);
-                if (index >= 0) {
-                    this.splineSeries[index].data.push({x: time, y: wave.value});
-                    this.barSeries[0].data[index] = wave.value;
+                if (index === -1) {
+                    this.splineSeries.push({name: wave.label, data: []});
+                    this.labels.push(wave.label);
+                    index = this.labels.indexOf(wave.label);
                 }
+                this.splineSeries[index].data.push({x: time, y: wave.value});
+                this.barSeries[0].data[index] = wave.value;
             });
         });
 
@@ -55,10 +55,13 @@ class MainComponent {
                         let barData = [];
                         data.waves.forEach(wave => {
                             let index = this.labels.indexOf(wave.label);
-                            if (index >= 0) {
-                                this.splineChart.series[index].addPoint([time, wave.value], true, true);
-                                barData[index] = wave.value;
+                            if (index === -1) {
+                                this.splineChart.addSeries({name: wave.label, data: []});
+                                this.labels.push(wave.label);
+                                index = this.labels.indexOf(wave.label);
                             }
+                            this.splineChart.series[index].addPoint([time, wave.value], true, false);
+                            barData[index] = wave.value;
                         });
                         this.barChart.series[0].setData(barData);
                     })
@@ -121,6 +124,9 @@ class MainComponent {
                 zoomType: 'xy',
             },
             plotOptions: {
+                series: {
+                    turboThreshold: 0,
+                },
                 turboThreshold: 10,
             },
             time: {

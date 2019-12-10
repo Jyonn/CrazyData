@@ -1,7 +1,7 @@
-from SmartDjango import models, E, Excp
+from SmartDjango import models, E
 
 
-@E.register
+@E.register()
 class UserError:
     USER_NOT_FOUND = E("找不到用户")
     CREATE_USER = E("新增用户失败")
@@ -36,16 +36,14 @@ class User(models.Model):
     )
 
     @staticmethod
-    @Excp.pack
     def get_by_qt_user_app_id(qt_user_app_id):
         try:
             user = User.objects.get(qt_user_app_id=qt_user_app_id)
         except User.DoesNotExist:
-            return UserError.USER_NOT_FOUND
+            raise UserError.USER_NOT_FOUND
         return user
 
     @classmethod
-    @Excp.pack
     def create(cls, qt_user_app_id, qt_token):
         cls.validator(locals())
 
@@ -54,8 +52,8 @@ class User(models.Model):
             user.qt_token = qt_token
             user.save()
             return user
-        except Excp as excp:
-            if excp.erroris(UserError.USER_NOT_FOUND):
+        except E as e:
+            if e.eis(UserError.USER_NOT_FOUND):
                 try:
                     user = cls(
                         qt_user_app_id=qt_user_app_id,
@@ -63,12 +61,13 @@ class User(models.Model):
                     )
                     user.save()
                     return user
-                except Exception:
-                    return UserError.CREATE_USER
+                except Exception as err:
+                    raise UserError.CREATE_USER(debug_message=err)
             else:
-                return UserError.CREATE_USER
+                raise e
+        except Exception as err:
+            raise UserError.CREATE_USER(debug_message=err)
 
-    @Excp.pack
     def update(self):
         from Base.common import qt_manager
         data = qt_manager.get_user_info(self.qt_token)

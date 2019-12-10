@@ -1,4 +1,4 @@
-from SmartDjango import models, E, Excp, P
+from SmartDjango import models, E, P
 
 from Base.common import get_time
 
@@ -25,23 +25,21 @@ class Segment(models.Model):
     )
 
     @classmethod
-    @Excp.pack
     def get(cls, sid):
         try:
             return cls.objects.get(pk=sid)
         except cls.DoesNotExist:
             return SegmentError.SEGMENT_NOT_FOUND
-        except Exception:
-            return SegmentError.GET_SEGMENT
+        except Exception as err:
+            raise SegmentError.GET_SEGMENT(debug_message=err)
 
     @classmethod
-    @Excp.pack
     def new(cls, project, time):
         try:
             segment = cls(project=project, time=time)
             segment.save()
-        except Exception:
-            return SegmentError.NEW_SEGMENT
+        except Exception as err:
+            raise SegmentError.NEW_SEGMENT(debug_message=err)
         return segment
 
     def _readable_sid(self):
@@ -61,8 +59,8 @@ class SegmentP:
     segment = P('sid', '数据段ID').process(Segment.get)
 
     time = Segment.get_param('time')
-    time = time.clone().set_default(through_processor=True).process(get_time, begin=True)
-    time_for_search = time.clone().set_default(0, through_processor=True)
+    time = time.clone().default(through_processors=True).process(get_time, begin=True)
+    time_for_search = time.clone().default(0, through_processors=True)
 
 
 class Wave(models.Model):
@@ -85,13 +83,12 @@ class Wave(models.Model):
     )
 
     @classmethod
-    @Excp.pack
     def new(cls, segment, label, value):
         try:
             wave = cls(segment=segment, label=label, value=value)
             wave.save()
-        except Exception:
-            return SegmentError.NEW_WAVE
+        except Exception as err:
+            raise SegmentError.NEW_WAVE(debug_message=err)
         return wave
 
     def d(self):
