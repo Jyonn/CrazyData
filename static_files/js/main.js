@@ -19,6 +19,7 @@ class MainComponent {
 
     prepareData(dataFlow) {
         // dataFlow = dataFlow.slice(dataFlow.length - 10);
+        // dataFlow = dataFlow.slice(1);
         this.splineSeries = [];
         this.barSeries = [{name: '', data: []}];
         this.labels = [];
