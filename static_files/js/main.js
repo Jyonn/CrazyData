@@ -104,7 +104,7 @@ class MainComponent {
                     dataLabels: {
                         enabled: true
                     }
-                }
+                },
             },
             legend: {
                 enabled: false,
@@ -127,6 +127,7 @@ class MainComponent {
             plotOptions: {
                 series: {
                     turboThreshold: 0,
+                    lineWidth: 4,
                 },
                 turboThreshold: 10,
             },
