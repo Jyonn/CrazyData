@@ -1,7 +1,7 @@
 class CrazyFetch {
     constructor(project) {
         this.project = project;
-        this.pager = new Pager({count: 10, api: `https://data.6-79.cn/v1/segment?pid=${this.project.pid}`, last: 0});
+        this.pager = new Pager({count: 30, api: `https://data.6-79.cn/v1/segment?pid=${this.project.pid}`, last: 0});
         this.is_fetching = false;
     }
 

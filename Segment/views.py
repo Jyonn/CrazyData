@@ -30,7 +30,7 @@ class BaseView(View):
     @Analyse.r(q=[
         ProjectP.project,
         SegmentP.time_for_search.clone().rename('last'),
-        P('count', '获取数据段个数').process(int).process(PL.number(10, 1)),
+        P('count', '获取数据段个数').process(int).process(PL.number(30, 1)),
     ])
     def get(r):
         project = r.d.project
