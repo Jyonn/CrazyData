@@ -1,8 +1,8 @@
 smartify
 PyJWT
-SmartDjango==3.6.3.a0
+SmartDjango==3.6.8
 gunicorn
 django-cors-headers
 mysqlclient
-QitianSDK==0.0.8.a0
-django
+QitianSDK
+django==3.0.6

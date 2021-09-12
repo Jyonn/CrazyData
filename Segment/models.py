@@ -52,7 +52,7 @@ class Segment(models.Model):
         return Wave.objects.filter(segment=self).dict(Wave.d)
 
     def d(self):
-        return self.dictor('sid', 'time', 'waves')
+        return self.dictify('sid', 'time', 'waves')
 
 
 class SegmentP:
@@ -92,7 +92,7 @@ class Wave(models.Model):
         return wave
 
     def d(self):
-        return self.dictor('label', 'value')
+        return self.dictify('label', 'value')
 
 
 class WaveP:

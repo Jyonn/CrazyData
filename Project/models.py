@@ -96,6 +96,9 @@ class Project(models.Model):
     def auth_ticket(self, ticket):
         return self.ticket == ticket
 
+    def remove(self):
+        self.delete()
+
 
 class ProjectP:
     name, pid, ticket = Project.P('name', 'pid', 'ticket')

@@ -25,6 +25,12 @@ class IDView(View):
     def get(r):
         return r.d.project.d()
 
+    @staticmethod
+    @Analyse.r(a=[ProjectP.project])
+    def delete(r):
+        r.d.project.remove()
+        return 0
+
 
 class TicketView(View):
     @staticmethod
