@@ -19,6 +19,9 @@
 <body>
     <div id="spline-container" class="container"></div>
     <div id="bar-container" class="container"></div>
+    <div id="mask-container" class="container focus">
+        <div>正在加载 <span id="progress">0%</span> ...</div>
+    </div>
 </body>
 <script>
     let pid = window.location.pathname.substr(6, 4);
@@ -26,6 +29,8 @@
         splineContainerId: 'spline-container',
         barContainerId: 'bar-container',
         projectId: pid,
+        maskContainerId: 'mask-container',
+        progressId: 'progress',
     });
 </script>
 </html>

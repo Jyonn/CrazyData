@@ -5,7 +5,7 @@ class CrazyFetch {
         this.is_fetching = false;
     }
 
-    async fetchNewData() {
+    async fetchNewData(progress = null) {
         let dataFlow = [];
 
         if (this.is_fetching) {
@@ -13,6 +13,9 @@ class CrazyFetch {
         }
 
         this.is_fetching = true;
+        let current_fetched = 0;
+        let total_count = 1;
+
 
         while (true) {
             this.pager.last = this.project.current_fetch_time;
@@ -27,10 +30,16 @@ class CrazyFetch {
                 if (data === null) {
                     break;
                 }
+
+                total_count = data.total_count;
                 data = data.object_list;
                 if (data.length) {
                     this.project.current_fetch_time = Math.max.apply(null, data.map(d => d.time));
                     dataFlow = dataFlow.concat(data);
+                    current_fetched += data.length;
+                    if (progress) {
+                        progress.innerText = (current_fetched * 100 / total_count).toFixed(0) + '%';
+                    }
                 }
             }
             if (dataFlow.length) {

@@ -1,7 +1,10 @@
 class MainComponent {
-    constructor({splineContainerId, barContainerId, projectId}) {
+    constructor({splineContainerId, barContainerId, projectId, maskContainerId, progressId}) {
         this.splineContainerId = splineContainerId;
         this.barContainerId = barContainerId;
+        this.maskContainer = document.getElementById(maskContainerId);
+        this.progress = document.getElementById(progressId);
+
         this.initProject(projectId);
         this.title = document.getElementsByTagName('title')[0];
     }
@@ -12,12 +15,13 @@ class MainComponent {
                 this.project = new Project(data);
                 this.title.innerText = '数据食堂 - ' + this.project.name;
                 this.crazyFetch = new CrazyFetch(this.project);
-                this.crazyFetch.fetchNewData(true)
+                this.crazyFetch.fetchNewData(this.progress)
                     .then(this.prepareData.bind(this));
             });
     }
 
     prepareData(dataFlow) {
+        this.maskContainer.remove();
         // dataFlow = dataFlow.slice(dataFlow.length - 10);
         // dataFlow = dataFlow.slice(1);
         this.splineSeries = [];
