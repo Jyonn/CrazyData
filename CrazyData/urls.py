@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from SmartDjango import Analyse
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import path, include
 from django.views.generic import RedirectView
@@ -24,7 +25,12 @@ def view_handler(r):
     return render(r, 'index.html')
 
 
+def wx_view(*args):
+    return HttpResponse('4388663213378584851')
+
+
 urlpatterns = [
     path('v1', include('CrazyData.api_urls')),
     path('hall/<path:pid>', view_handler),
+    path('tencent12290086912027340533.txt', wx_view),
 ]
