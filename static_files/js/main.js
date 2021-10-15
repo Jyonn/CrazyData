@@ -128,6 +128,10 @@ class MainComponent {
                 marginRight: 10,
                 zoomType: 'xy',
             },
+            colors: [
+                '#7cb5ec', '#434348', '#90ed7d', '#f7a35c',
+                '#8085e9', '#f15c80', '#e4d354', '#8d4653',
+                '#91e8e1', '#3139CB', '#19781E', '#782519'],
             plotOptions: {
                 series: {
                     turboThreshold: 0,
