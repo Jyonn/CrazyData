@@ -86,9 +86,9 @@ class Project(models.Model):
 
     def d(self):
         key = 'VISIT-' + self.pid
-        visit_num = Config.get_value_by_key(key, 0)
+        visit_num = int(Config.get_value_by_key(key, 0))
         visit_num += 1
-        Config.update_value(key, visit_num)
+        Config.update_value(key, str(visit_num))
 
         return self.dictor('name', 'pid', 'create_time', 'owner')
 
