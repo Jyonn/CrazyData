@@ -3,6 +3,7 @@ from django.utils.crypto import get_random_string
 from smartify import Processor
 
 from Base.common import get_time
+from Config.models import Config
 
 
 @E.register()
@@ -40,11 +41,6 @@ class Project(models.Model):
         verbose_name='项目录入凭证',
         max_length=64,
         default=None,
-    )
-
-    visit_num = models.IntegerField(
-        verbose_name='访问人数',
-        default=0,
     )
 
     @classmethod
@@ -89,8 +85,11 @@ class Project(models.Model):
         return self.owner.d()
 
     def d(self):
-        self.visit_num += 1
-        self.save()
+        key = 'VISIT-' + self.pid
+        visit_num = Config.get_value_by_key(key, 0)
+        visit_num += 1
+        Config.update_value(key, visit_num)
+
         return self.dictor('name', 'pid', 'create_time', 'owner')
 
     def d_owner(self):
