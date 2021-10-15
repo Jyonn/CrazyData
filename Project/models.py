@@ -42,6 +42,11 @@ class Project(models.Model):
         default=None,
     )
 
+    visit_num = models.IntegerField(
+        verbose_name='访问人数',
+        default=0,
+    )
+
     @classmethod
     def get(cls, pid):
         try:
@@ -84,6 +89,8 @@ class Project(models.Model):
         return self.owner.d()
 
     def d(self):
+        self.visit_num += 1
+        self.save()
         return self.dictor('name', 'pid', 'create_time', 'owner')
 
     def d_owner(self):
