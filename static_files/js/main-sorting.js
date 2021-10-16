@@ -25,7 +25,14 @@ class MainComponent {
         // dataFlow = dataFlow.slice(dataFlow.length - 10);
         // dataFlow = dataFlow.slice(1);
         this.splineSeries = [];
-        this.barSeries = [{name: '', data: []}];
+        this.barSeries = [{
+            name: '',
+            data: [],
+            dataSorting: {
+                enabled: true,
+                sortKey: 'y',
+            },
+        }];
         this.labels = [];
         dataFlow.forEach(data => {
             let time = data.time * 1000;
@@ -37,7 +44,7 @@ class MainComponent {
                     index = this.labels.indexOf(wave.label);
                 }
                 this.splineSeries[index].data.push({x: time, y: wave.value});
-                this.barSeries[0].data[index] = wave.value;
+                this.barSeries[0].data[index] = [wave.label, wave.value];
             });
         });
 
@@ -86,7 +93,10 @@ class MainComponent {
                 text: this.barTitle,
             },
             xAxis: {
-                categories: this.labels,
+                type: 'category',
+                labels: {
+                    animate: true,
+                },
                 title: {
                     text: null
                 }
@@ -106,7 +116,8 @@ class MainComponent {
             plotOptions: {
                 bar: {
                     dataLabels: {
-                        enabled: true
+                        enabled: true,
+                        overflow: "justify"
                     }
                 },
             },
